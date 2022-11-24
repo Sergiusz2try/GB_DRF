@@ -1,14 +1,22 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
+from rest_framework.serializers import HyperlinkedModelSerializer
+
+from users.models import CustomUser
+from users.serializers import CustomUserModelSerializer
 from .models import Project, ToDo
 
 
-class ProjectModelSerializer(ModelSerializer):
+class ProjectModelSerializer(HyperlinkedModelSerializer):
+    users = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Project
-        fields = '__all__'
+        fields = ('name', 'repo_link', 'users',)
 
 
-class ToDoModelSerializer(ModelSerializer):
+class ToDoModelSerializer(HyperlinkedModelSerializer):
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = ToDo
-        fields = '__all__'
+        fields = ('user', 'text', 'create_date', 'done',)

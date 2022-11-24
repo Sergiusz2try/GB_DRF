@@ -15,7 +15,7 @@ class ProjectLimitOffsetPagination(LimitOffsetPagination):
 class ProjectModelViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
-    pagination_class = ProjectLimitOffsetPagination
+    # pagination_class = ProjectLimitOffsetPagination
     filterset_class = ProjectFilter
 
 
@@ -26,7 +26,7 @@ class ToDoLimitOffsetPagination(LimitOffsetPagination):
 class ToDoModelViewSet(ModelViewSet):
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
-    pagination_class = ToDoLimitOffsetPagination
+    # pagination_class = ToDoLimitOffsetPagination
     filterset_fields = ['id', 'project', 'create_date', 'done']
 
     def destroy(self, request, *args, **kwargs):
