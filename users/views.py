@@ -1,14 +1,17 @@
 from django.http import Http404
+from django.views.generic import DetailView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
 from .models import CustomUser
-from .serializers import CustomUserModelSerializer
+from .serializers import CustomUserModelSerializer, CustomUserDetailModelSerializer
 
 
 class CustomUserAPIView(APIView):
+    queryset = CustomUser.objects.all()
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
 
     def get(self, request, format=None):
@@ -37,6 +40,10 @@ class CustomUserAPIView(APIView):
 
         return Response(status=HTTP_400_BAD_REQUEST)
 
+
+class CustomUserDetailView(RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserDetailModelSerializer
 
 # class CustomUserModelViewSet(ModelViewSet):
 #     queryset = CustomUser.objects.all()
