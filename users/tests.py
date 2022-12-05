@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIRequestFactory, APIClient, APISimpleTestCase, APITestCase
+from rest_framework.test import APIRequestFactory, APIClient, APITestCase
 from mixer.backend.django import mixer
 from .views import CustomUserAPIView
 from .models import CustomUser
