@@ -1,8 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import HyperlinkedModelSerializer
 
-from users.models import CustomUser
-from users.serializers import CustomUserModelSerializer
 from .models import Project, ToDo
 
 
@@ -11,7 +9,7 @@ class ProjectModelSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('name', 'repo_link', 'users',)
+        fields = '__all__'
 
 
 class ToDoModelSerializer(HyperlinkedModelSerializer):
@@ -19,4 +17,4 @@ class ToDoModelSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = ToDo
-        fields = ('user', 'text', 'create_date', 'done',)
+        fields = ('user', 'text', 'project', 'create_date', 'done',)

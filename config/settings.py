@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'todo',
     'rest_framework.authtoken',
     'drf_yasg',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +135,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Django REST_FRAMEWORK
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASS': [
         'rest_framework.renderers.JSONRenderer',
@@ -152,4 +154,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
 
+}
+
+#GraphQL
+GRAPHENE = {
+    "SCHEMA": "config.schema.schema"
 }
