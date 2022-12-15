@@ -6,8 +6,11 @@ import UserList from './components/Users.js';
 import ProjectList from './components/Project.js';
 import TodoList from './components/Todo.js';
 import LoginForm from './components/Auth.js';
+import ProjectForm from "./components/ProjectForm";
 import {BrowserRouter, Route, Routes, Link} from 'react-router-dom';
 import Cookies from 'universal-cookie';
+import TODOForm from "./components/TODOForm";
+
 
 
 const NotFound404 = ({ location }) => {
@@ -29,6 +32,40 @@ class App extends React.Component {
             'todos': [],
             'token': '',
         }
+    }
+
+    createProject(name, users, repo_link) {
+        const headers = this.get_headers()
+        const data = {name:name, users:users, repo_link:repo_link}
+        axios.post('http://127.0.0.1:8000/api/projects/', data,{headers})
+            .then(response => {
+                this.load_data()
+            }).catch(error => console.log(error))
+    }
+
+    deleteProject(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/projects/${id}`,{headers})
+            .then(response => {
+                this.load_data()
+            }).catch(error => console.log(error))
+    }
+
+    createTODO(text, user, project) {
+        const headers = this.get_headers()
+        const data = {text: text, user: user, project: project}
+        axios.post('http://127.0.0.1:8000/api/todo', data, {headers})
+            .then(response => {
+                this.load_data()
+            }).catch(error => console.log(error))
+    }
+
+    delete_todo(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/todo/${id}`,{headers})
+            .then(response => {
+                this.load_data()
+            }).catch(error => console.log(error))
     }
 
     set_token(token) {
@@ -70,7 +107,7 @@ class App extends React.Component {
     load_data() {
         const headers = this.get_headers()
 
-        axios.get('http://127.0.0.1:8000/api/get_users', {headers})
+        axios.get('http://127.0.0.1:8000/api/0.1/get_users', {headers})
             .then(response => {
                 const users = response.data
                     this.setState({
@@ -121,8 +158,17 @@ class App extends React.Component {
 
                     <Routes>
                         <Route exact path='/' element={<UserList users={this.state.users} />} />
-                        <Route exact path='/projects' element={<ProjectList projects={this.state.projects} />} />
-                        <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
+                        <Route exact path='/projects' element={<ProjectList
+                            projects={this.state.projects}
+                            deleteProject={(id)=>this.deleteProject(id)} />} />
+                        <Route exact path='/projects/create' element={<ProjectForm
+                            users={this.state.users}
+                            createProject={(name, users, repo_link)=>this.createProject(name, users, repo_link)} />} />
+                        <Route exact path='/todo' element={<TodoList
+                            todos={this.state.todos} delete_todo={(id)=>this.delete_todo(id)} />} />
+                        <Route exact path='/todo/create' element={<TODOForm
+                            users={this.state.users}
+                            createTODO={(text, user, project)=>this.createTODO(text, user, project)} />} />
                         <Route exact path='/login' element={<LoginForm get_token={(username, password) =>
                             this.get_token(username, password)} />} />
                         <Route component={NotFound404} />
